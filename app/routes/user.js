@@ -31,11 +31,16 @@ app.post('/login', cors(corsOptions), (req, res) => {
 })
 app.get(
     '/logout',
+     //인증, 미들웨어
     passport.authenticate('jwt', {session: false}),
     function (req, res) {
         UserService().logout(req, res)
-        req.logout();
-        res.json({msg: 'LOGOUT'});
+        // req.logout(); //캐시 삭제
+        // res.json({msg: 'LOGOUT'});
     }
 );
+app.get('/getUsers', passport.authenticate('jwt', {session: false}), (req, res) => {
+        UserService().getUsers(req, res)
+})
+
 export default app

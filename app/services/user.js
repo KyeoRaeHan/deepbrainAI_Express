@@ -111,6 +111,7 @@ export default function UserService() {
             res.json({success: true, msg: '로그아웃'});
 
         },
+        // 아이디 중복 여부 체크
         checkDuplicateUserid(req, res) {
             User
                 .findById({userid: req.body.userid})
@@ -129,13 +130,21 @@ export default function UserService() {
                     }
                 })
         },
-        getUserById(userid){
+        getUserById(req, res){
+            const userid = req.body.userid
             User
                 .findById({userid: userid})
                 .exec((_err, user) => {
-                    return user
+                    res.status(200).json(users)
                 })
-        }
+        },
 
-    } // return
+        getUsers(req, res){
+            User.find().exec(
+                (err, users) => {
+                    res.status(200).json(users)
+                }
+            )
+        }
+    } 
 }
